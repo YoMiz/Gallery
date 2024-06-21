@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/css/managestyle.css}" />
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<title>託児所予約管理</title>
+</head>
+<body>
+	<header>
+		<div class="header-contents">
+			<h1 class="header-title">託児所予約管理ページ</h1>
+			<div class="header-contents-menu">
+				<p>
+					<a href="/artPieceList">展示管理</a>
+				</p>
+				<p>
+					<a href="/userList">顧客管理</a>
+				</p>
+				<p>
+					<a href="/reservationList">予約管理</a>
+				</p>
+				<p>
+					<a href="/nurseryReservationList">託児所予約管理</a>
+				</p>
+				<p>
+					<a href="/gallery">戻る</a>
+				</p>
+			</div>
+		</div>
+	</header>
+	<main>
+		<div id="main">
+			<button class="openbtn" onclick="openNav()">☰ メニュー</button>
+		</div>
+
+		<table class="main-list" border="1">
+			<tr>
+				<th>託児所予約番号</th>
+				<th>利用者名</th>
+				<th>お預かり人数</th>
+				<th>金額</th>
+				<th>予約日</th>
+			</tr>
+			<tr th:each="nurseryReservation : ${nurseryReservationList}">
+				<td>[[${nurseryReservation.id}]]</td>
+				<td>[[${nurseryReservation.userName}]]</td>
+				<td>[[${nurseryReservation.reservationNumber}]]</td>
+				<td>[[${nurseryReservation.reservationDate}]]</td>
+				<td>[[${nurseryReservation.price}]]</td>
+			</tr>
+		</table>
+	</main>
+	<div id="mySidebar" class="sidebar">
+		<h4>
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×閉じる</a>
+		</h4>
+
+		<div class="dropdown">
+			<h3 th:if="${updateErrorMessage != null}" style="color: red;"
+				th:text="${updateErrorMessage}"></h3>
+			<button class="dropbtn">更新</button>
+			<div class="dropdown-content">
+				<form action="/updateNurseryReservation" method="post">
+					<div class="form-group">
+						<br />
+						<p>予約更新</p>
+						<div th:block th:object="${nurseryReservation}">
+							<p>
+								予約ID <input type="number" th:field="*{id}" />
+							</p>
+							<p>
+								ユーザーID<input type="number" th:field="*{userId}" id="user-id"
+									min="0" />
+							</p>
+							<p id="user-name" th:field="*{userName}"></p>
+							<input type="hidden" id="hidden-user-name" th:field="*{userName}" />
+							<p>
+								予約日<input type="date" th:field="*{reservationDate}" />
+							</p>
+							<p>
+								お預かり人数<input type="number" id="childNum" th:field="*{reservationNumber}"
+									min="1" />
+							</p>
+
+							<p>
+								金額<input type="number" id="price" th:field="*{price}" min="0" />
+							</p>
+							<input type="submit" value="更新" class="sendInfo">
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		function openNav() {
+			document.getElementById("main").style.marginLeft = "0px";
+			document.getElementById("mySidebar").style.transform = "translateX(0px)";
+		}
+
+		function closeNav() {
+			document.getElementById("main").style.marginLeft = "280px";
+			document.getElementById("mySidebar").style.transform = "translateX(280px)";
+		}
+		document.querySelectorAll('.dropbtn').forEach(function(dropbtn) {
+			dropbtn.addEventListener('click', function() {
+				var dropdownContent = this.nextElementSibling;
+				if (dropdownContent.style.display === 'block') {
+					dropdownContent.style.display = 'none';
+				} else {
+					dropdownContent.style.display = 'block';
+				}
+			});
+		});
+
+		$(document).ready(function() {
+
+			$('#event-id').change(function() {
+				var eventId = $(this).val();
+				$.ajax({
+					url : '/getEventName',
+					data : {
+						'id' : eventId
+					},
+					success : function(response) {
+						if (response) {
+							$('#event-name').text(response);
+							$('#hidden-event-name').val(response);
+						} else {
+							$('#event-name').text('該当するイベントはありません');
+							$('#hidden-event-name').val('');
+						}
+					}
+				});
+			});
+
+			$('#user-id').change(function() {
+				var userId = $(this).val();
+				$.ajax({
+					url : '/getUserName',
+					data : {
+						'id' : userId
+					},
+					success : function(response) {
+						if (response) {
+							$('#user-name').text(response);
+							$('#hidden-user-name').val(response);
+						} else {
+							$('#user-name').text('該当するユーザーはありません');
+							$('#hidden-user-name').val('');
+						}
+					}
+				});
+			});
+
+			$('#adultNum, #childNum').change(function() {
+				var adultNum = $('#adultNum').val();
+				var childNum = $('#childNum').val();
+				var price = adultNum * 1500 + childNum * 500;
+				$('#price').val(price);
+			});
+		});
+	</script>
+</html>

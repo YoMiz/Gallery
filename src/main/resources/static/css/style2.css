@@ -1,0 +1,47 @@
+@charset "UTF-8";@charset "UTF-8";
+
+.top-view-text {
+    font-family: Arial, sans-serif;
+    color: white;
+    background-color: rgba(200,210,220,0.8);
+    padding: 50px;
+    text-align: center;
+    width: 35%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.title-text{
+	width:200px;
+}
+.top-view{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start; /* 子要素を上端に寄せる */
+}
+
+
+.point-image {
+    display: flex;
+    flex-direction: row; /* 子要素を水平方向に並べます */
+    align-items: center;
+    justify-content: center;
+}
+
+.image-container {
+    margin-right: 20px; /* 画像と説明の間に余白を設けます */
+}
+
+.description {
+	text-align: center; /* 説明のテキストを中央寄せにします */
+}
+
+.description-title {
+	margin-bottom: 10px; /* 説明のタイトルと本文の間に余白を設けます */
+}
+.description {
+    padding: 10px; /* テキストと枠線の間の余白を設定 */
+    width: 35ch; /* 一行あたりの文字数を設定 */
+    word-wrap: break-word; /* 文字数が上限を超えた場合に折り返す */
+}

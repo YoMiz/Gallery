@@ -1,0 +1,99 @@
+/* ヘッダーのスタイル */
+header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  text-align: right;
+}
+
+/* タイトルのスタイル */
+h1 {
+  font-size: 36px;
+  color: #333333;
+  margin: 20px 0;
+}
+.Facility-Map{
+	width:80%;
+	transform:translateY(-15px);
+}
+.gallery-Map{
+	position:relative;
+	bottom:10px;
+	background-color: #aad5ac;
+	text-align:center;
+  	color: #666666;
+}
+
+/* 施設名のスタイル */
+.facility-name {
+  font-size: 24px;
+  color: #666666;
+  margin: 10px 0;
+  background-color: #aad5ac; /* 背景色を緑に設定 */
+  width: 100%; /* 幅を100%に設定 */
+  text-align: center; /* テキストを中央寄せに設定 */
+  position: absolute;
+  transform: translateY(-30px); /* 追加：上に10px移動 */
+}
+
+/* 施設画像のスタイル */
+.facility-img {
+  width: 553px;
+  height: auto;
+  margin: 10px auto;
+  display: block;
+  float: left; /* 画像を左に配置 */
+  position:relative;
+  
+}/* 施設メニューのスタイル */
+.section-menu {
+  font-size: 18px;
+  color: #999999;
+  margin: 10px 0;
+  margin-left: auto; /* 追加：左側のマージンを自動に設定 */
+  width: 40%; /* 幅を40%に設定 */
+}
+
+.table {
+  width: 80%;
+  margin: 10px auto;
+  border-collapse: collapse;
+  background-color: rgba(242, 242, 242, 0.75); /* 追加 */
+}
+
+/* テーブルヘッダーのスタイル */
+.table th {
+  background-color: #cccccc;
+  padding: 5px;
+  text-align: left;
+}
+
+/* テーブルデータのスタイル */
+.table td {
+  border: 1px solid #cccccc;
+  padding: 5px;
+}
+
+/* メニュー写真のスタイル */
+.table td img {
+  width: 100px;
+  height: 30px;
+  object-fit: cover;
+}
+
+.section {
+  position: relative; /* 追加：.facility-nameの基準点を.sectionにする */
+}
+
+.section-image, .section-menu {
+  position: relative; /* 追加：.facility-nameと同じスタックコンテキストにする */
+}
+.section-menu {
+    order: 2; /* 右側に表示 */
+    width: 50%; /* 幅を50%に設定 */
+}
+.input-info{
+	padding-bottom:15px;
+}
+.num-box{
+	width:60px;
+}

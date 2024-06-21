@@ -1,0 +1,49 @@
+@charset "UTF-8";
+.top-view-text {
+    font-family: Arial, sans-serif; /* フォントをArialに変更 */
+    color: white; /* 文字色を白に変更 */
+    background-color: rgba(230,200,220,0.8); /* 背景色を変更 */
+    padding: 50px; /* パディングを50pxに変更 */
+    text-align: center;
+}
+
+
+.top-view{
+	display: flex;
+	flex-direction: column;
+	flex-wrap:wrap;
+	justify-content:flex-end;
+	align-items: stretch;
+	}
+
+.exhibition:nth-child(odd) .image-container {
+	flex-direction: row;
+}
+
+.exhibition:nth-child(even) .image-container {
+	flex-direction: row-reverse;
+}
+
+.image-container {
+	display: flex;
+	justify-content: center;
+	padding-top:30px;
+}
+.description-text {    padding: 18px; /* テキストと枠線の間の余白を設定 */
+    width: 35ch; /* 一行あたりの文字数を設定 */
+    word-wrap: break-word; /* 文字数が上限を超えた場合に折り返す */
+}
+
+#point {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.point-image {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}

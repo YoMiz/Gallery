@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.app.mapper.ArtInfoMapper">
+	<select id="showArtPieces"
+		resultType="com.example.app.domain.ArtInfo">
+		SELECT * FROM artpiece
+	</select>
+	<insert id="addArtPiece"
+		parameterType="com.example.app.domain.ArtInfo">
+		INSERT INTO artpiece (title, author, height, width,
+		position, event_id, description, file_name)
+		VALUES (#{title},
+		#{author}, #{height}, #{width}, #{position},#{eventId},
+		#{description}, #{fileName})
+	</insert>
+	<select id="selectByEventId"
+		resultType="com.example.app.domain.ArtInfo">
+		SELECT * FROM artpiece WHERE event_id = #{eventId}
+	</select>
+	<delete id="deleteArtPiece" parameterType="int">
+		DELETE FROM artpiece
+		WHERE id = #{id}
+	</delete>
+	<update id="updateArtPiece" parameterType="ArtInfo">
+		UPDATE artpiece SET
+		title=#{title},
+		author=#{author},
+		height=#{height},
+		width=#{width},
+		description=#{description},
+		event_id=#{eventId},
+		position=#{position},
+		file_name=#{fileName}
+		WHERE id =#{id}
+	</update>
+
+</mapper>

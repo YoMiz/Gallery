@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>施設案内</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="./css/facilitiesStyle.css">
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<script src="./js/main.js"></script>
+</head>
+<body>
+	<div id="main">
+		<button class="openbtn" onclick="openNav()">☰ メニュー</button>
+	</div>
+	<div id="mySidebar" class="sidebar">
+		<h4>
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×閉じる</a>
+		</h4>
+
+		<div class="side-menu login">
+			<div th:if="${session.loginId != null}">
+				<p th:text="${session.user.getUserName() + '様'}" class="user-name"></p>
+				<p th:text="${'現在のポイント：' + session.user.getPoint() + 'pt'}"></p>
+				<div th:if="${session.user.getUserName() == 'Yo Mizuki'}">
+					<a href="/artPieceList">管理ページへ</a>
+				</div>
+				<a href="/gallery/logout">ログアウト</a>
+			</div>
+			<div th:if="${session.loginId == null}">
+				<form action="/gallery/member" method="post" th:object="${admin}">
+					<tr>
+						<th><p>LoginID:</p></th>
+						<td><p>
+								<input type="text" th:field="*{loginId}" required />
+							</p></td>
+					</tr>
+					<tr>
+						<th><p>Password:</p></th>
+						<td><p>
+								<input type="password" th:field="*{password}" required />
+							</p></td>
+					</tr>
+					<tr>
+						<th></th>
+						<td><p>
+								<input type="submit" value="ログイン" />
+							</p></td>
+					</tr>
+				</form>
+			</div>
+		</div>
+
+		<div class="side-menu archive">
+			<h2>Archive</h2>
+			<table>
+				<tbody>
+					<!-- thymeleafの書き方 -->
+					<tr th:each="event : ${eventList}" th:object="${event}">
+						<a class="archives"
+							th:href="@{/gallery/{eventId}(eventId=${event.id})}"> <span
+							th:text="${#dates.format(event.eventStart, 'yyyy/MM/dd')}"></span><br>
+							<span th:text="${event.eventName}"></span>
+						</a>
+					</tr>
+				</tbody>
+
+			</table>
+
+
+
+			<div th:if="${totalPages >= 2}" class="container">
+				<ul class="pagination">
+					<!-- 前のページへ -->
+					<th:block th:switch="${page}">
+						<li th:case="1" class="page-item disabled"><a
+							class="page-link" href="">＜ </a></li>
+						<li th:case="*" class="page-item"><a class="page-link"
+							th:href="@{/gallery(page=${page - 1})}">＜ </a></li>
+					</th:block>
+
+					<th:block th:each="index : ${#numbers.sequence(1, totalPages)}">
+						<span>&lt;</span>
+						<th:block th:switch="${index}">
+							<li th:case="${page}" class="page-item active"><a
+								class="page-link" href="">[[${index}]] </a></li>
+							<li th:case="*" class="page-item"><a class="page-link"
+								th:href="@{/gallery(page=${index})}">[[${index}]] </a></li>
+						</th:block>
+					</th:block>
+					<span>&lt;</span>
+					<th:block th:switch="${page}">
+						<li th:case="${totalPages}" class="page-item disabled"><a
+							class="page-link" href="">＞ </a></li>
+						<li th:case="*" class="page-item"><a class="page-link"
+							th:href="@{/gallery(page=${page + 1})}">＞ </a></li>
+					</th:block>
+				</ul>
+			</div>
+		</div>
+
+		<div class="side-menu access">
+			<h2>
+				<a href="/facility">施設案内</a>
+			</h2>
+			<p>
+				住所：〒169-0073 <br /> 東京都新宿区百人町2-4-8 <br /> ステアーズビル8階
+			</p>
+			<iframe class="col-10"
+				src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d809.9971032073738!2d139.69948413476433!3d35.701902751642585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188d2f6ccb2b73%3A0x63c38fd40aa96dad!2z44CSMTY5LTAwNzMg5p2x5Lqs6YO95paw5a6_5Yy655m-5Lq655S677yS5LiB55uu77yU4oiS77yYIOOCueODhuOCouODvOOCuuODk-ODqyA46ZqO!5e0!3m2!1sja!2sjp!4v1697431931503!5m2!1sja!2sjp"
+				width="450" height="350" style="border: 0;" allowfullscreen=""
+				loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+		</div>
+	</div>
+
+	<header>
+		<h2>
+			<a href="/gallery">戻る</a>
+		</h2>
+	</header>
+	<div class="container">
+		<h1>施設案内</h1>
+		<h2 class="gallery-Map">館内マップ</h2>
+		<figure>
+			<img src="./images/finalfloormap.png" onclick="handleClick(event)"
+				class="Facility-Map" alt="Facility Map">
+		</figure>
+		<div class="container">
+			<div id="cafe" class="section row">
+				<h2 class="facility-name col-12">カフェ</h2>
+				<figure class="section-image col-md-6">
+					<img src="./images/cafe.jpg" class="facility-img" alt="Cafe Photo">
+				</figure>
+				<div class="section-menu col-md-3">
+					<h3>カフェメニュー</h3>
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">photo</th>
+								<th scope="col">name</th>
+								<th scope="col">description</th>
+								<th scope="col">price</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><img src="./images/coffee.jpg" class="facility-img"
+									alt="Menu Photo" width="200px"></td>
+								<td>menu1</td>
+								<td>description1</td>
+								<td>5000yen</td>
+							</tr>
+							<tr>
+								<td><img src="./images/icedTea.jpg" class="facility-img"
+									alt="Menu Photo" width="200px"></td>
+								<td>menu1</td>
+								<td>description1</td>
+								<td>5000yen</td>
+							</tr>
+							<tr>
+								<td><img src="./images/sandwitch.jpg" class="facility-img"
+									alt="Menu Photo" width="200px"></td>
+								<td>menu1</td>
+								<td>description1</td>
+								<td>5000yen</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div id="restaurant" class="section row">
+			<h2 class="facility-name col-12">レストラン</h2>
+			<figure class="section-image col-md-6">
+				<img src="./images/restaurant.jpg" class="facility-img"
+					alt="Restaurant Photo">
+			</figure>
+			<div class="section-menu col-md-1">
+				<h3>食事メニュー</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">photo</th>
+							<th scope="col">name</th>
+							<th scope="col">description</th>
+							<th scope="col">price</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><img src="./images/5-63.jpg" class="facility-img"
+								alt="Menu Photo"></td>
+							<td>menu1</td>
+							<td>description1</td>
+							<td>5000yen</td>
+						</tr>
+						<tr>
+							<td><img src="./images/hamburg.jpg" class="facility-img"
+								alt="Menu Photo"></td>
+							<td>menu1</td>
+							<td>description1</td>
+							<td>5000yen</td>
+						</tr>
+						<tr>
+							<td><img src="./images/napolitan.jpg" class="facility-img"
+								alt="Menu Photo"></td>
+							<td>menu1</td>
+							<td>description1</td>
+							<td>5000yen</td>
+						</tr>
+					</tbody>
+				</table>
+				<div th:if="${session.loginId != null}">
+					<div class="input-info">
+						<p>一杯：500ポイント(５杯まで)</p>
+						<p th:text="${'現在のポイント：' + session.user.getPoint() + 'pt'}"></p>
+						<div th:if="${message} != null" style="color: red;">
+							<p th:text="${message}"></p>
+							<!-- QRコードの画像を表示 -->
+							<div th:if="${qrCodeImageUrl} != null">
+								<a th:href="${qrCodeImageUrl}" target="_blank">QRコードを見る</a>
+							</div>
+
+						</div>
+						<form action="/facility/freeDrink" method="post">
+							<input type="number" class="num-box" name="drinkAmt" min="0" max="5"
+								id="drink-amt" /> <input type="submit" value="ポイントを消費して注文" />
+						</form>
+					</div>
+				</div>
+
+				<br />
+
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div id="nursery" class="section row">
+			<h2 class="facility-name col-12">託児所</h2>
+			<figure class="section-image col-12">
+				<img src="./images/takujijo.jpg" class="facility-img"
+					alt="Nursery Photo">
+				<div class="section-menu col-md-1">
+					<table class="table">
+						<tr>
+							<th>利用時間</th>
+							<td>13:00～閉館時間の15分前まで（1回3時間まで）
+								※展覧会の混雑により入場制限がかかった場合も、託児時間に延長や変更はありません。ご注意ください。</td>
+						</tr>
+						<tr>
+							<th>定員</th>
+							<td>1日10名前後 ＊お子様の年齢により異なります</td>
+						</tr>
+						<tr>
+							<th>申し込み方法</th>
+							<td>事前予約制。下記の予約可能期間にお申し込みください（定員になり次第、締切）
+
+								＊利用日前日の17:00まで受付可能（12:00～13:00、土日祝を除く）</td>
+						</tr>
+						<tr>
+							<th>利用料金</th>
+							<td>お子様1名様につき1,000円（税込）</td>
+						</tr>
+					</table>
+					<div class="input-info">
+						<div th:if="${nurseryError != null}">
+							<p th:text="${nurseryError}"></p>
+						</div>
+						<div th:if="${session.loginId != null}">
+							<p>１グループ様５名まで</p>
+							<form action="/facility/nurseryReservation" method="post"
+								th:object="${nurseryReservation}">
+								<input type="date" th:field="*{reservationDate}" /> <input class="num-box"
+									type="number" th:field="*{reservationNumber}" max="5" min="1"/> <input
+									type="submit" value="予約" />
+							</form>
+						</div>
+					</div>
+				</div>
+			</figure>
+		</div>
+		<div id="smoking" class="section row">
+			<h2 class="facility-name col-12">喫煙所</h2>
+			<figure class="section-image col-12">
+				<img src="./images/smokingroom.jpg" class="facility-img"
+					alt="Smoking Area Photo">
+				<div class="section-menu col-md-1">
+					<table class="table">
+						<br />
+						<br />
+						<tr>
+							<th>利用時間</th>
+							<td>9:00～閉館まで</td>
+						</tr>
+						<tr>
+							<th>定員</th>
+							<td>8名</td>
+						</tr>
+					</table>
+				</div>
+			</figure>
+		</div>
+	</div>
+	<script>
+		function handleClick(event) {
+			// 元の画像のサイズを定義します。
+			var originalWidth = event.target.naturalWidth; // 元の画像の幅
+			var originalHeight = event.target.naturalHeight; // 元の画像の高さ
+
+			// 現在の画像のサイズを取得します。
+			var currentWidth = event.target.clientWidth;
+			var currentHeight = event.target.clientHeight;
+
+			// 元のサイズと現在のサイズの比率を計算します。
+			var widthRatio = originalWidth / currentWidth;
+			var heightRatio = originalHeight / currentHeight;
+
+			// クリックされた座標を取得します。
+			var x = event.clientX - event.target.getBoundingClientRect().left;
+			var y = event.clientY - event.target.getBoundingClientRect().top;
+
+			// 座標をスケーリングします。
+			var scaledX = x * widthRatio;
+			var scaledY = y * heightRatio;
+
+			// 各エリアの座標をスケーリングします。
+			var minX_cafe = 1948, maxX_cafe = 2794, minY_cafe = 109, maxY_cafe = 595;
+			var minX_restaurant = 857, maxX_restaurant = 1714, minY_restaurant = 109, maxY_restaurant = 810;
+			var minX_nursery = 719, maxX_nursery = 1301, minY_nursery = 1314, maxY_nursery = 1649;
+			var minX_smoking = 305, maxX_smoking = 600, minY_smoking = 1300, maxY_smoking = 1500;
+
+			// スケーリングされた座標に基づいて該当する項目を決定します。
+			var id;
+			if ((scaledX >= minX_cafe && scaledX <= maxX_cafe)
+					&& (scaledY >= minY_cafe && scaledY <= maxY_cafe)) {
+				id = 'cafe';
+			} else if ((scaledX >= minX_restaurant && scaledX <= maxX_restaurant)
+					&& (scaledY >= minY_restaurant && scaledY <= maxY_restaurant)) {
+				id = 'restaurant';
+			} else if ((scaledX >= minX_nursery && scaledX <= maxX_nursery)
+					&& (scaledY >= minY_nursery && scaledY <= maxY_nursery)) {
+				id = 'nursery';
+			} else if ((scaledX >= minX_smoking && scaledX <= maxX_smoking)
+					&& (scaledY >= minY_smoking && scaledY <= maxY_smoking)) {
+				id = 'smoking';
+			} else {
+				id = 'unknown';
+			}
+
+			// 該当する項目に移動します。
+			location.href = '#' + id;
+
+		}
+		//sidebar menu
+		function openNav() {
+			document.getElementById("main").style.marginLeft = "0px";
+			document.getElementById("mySidebar").style.transform = "translateX(0px)";
+		}
+
+		function closeNav() {
+			document.getElementById("main").style.marginLeft = "280px";
+			document.getElementById("mySidebar").style.transform = "translateX(-280px)";
+		}
+	</script>
+</body>
+</html>

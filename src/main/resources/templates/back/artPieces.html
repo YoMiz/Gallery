@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/css/managestyle.css}" />
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="./css/bootstrap.min.css">
+<link rel="stylesheet" href="./js/main.js">
+<title>展示DB</title>
+</head>
+<body>
+	<header>
+		<div class="header-contents">
+			<h1 class="header-title">展示管理ページ</h1>
+			<div class="header-contents-menu">
+				<p>
+					<a href="/artPieceList">展示管理</a>
+				</p>
+				<p>
+					<a href="/userList">顧客管理</a>
+				</p>
+				<p>
+					<a href="/reservationList">予約管理</a>
+				</p>
+				<p><a href="/nurseryReservationList">託児所予約管理</a></p>
+				<p>
+			<a href="/gallery">戻る</a></p>
+			</div>
+		</div>
+	</header>
+	<main>
+		<div id="main">
+			<button class="openbtn" onclick="openNav()">☰ メニュー</button>
+		</div>
+
+		<table border="1" class="main-list">
+			<tr>
+				<th>作品ID</th>
+				<th>画像</th>
+				<th>展示ID</th>
+				<th>題名</th>
+				<th>作者</th>
+				<th>高さ</th>
+				<th>幅</th>
+				<th>位置情報</th>
+				<th>説明文</th>
+				<th>ファイル名</th>
+			</tr>
+			<tr th:each="artPiece : ${ArtList}">
+				<td>[[${artPiece.id}]]</td>
+				<td><img th:src="@{/gallerys/{img} (img=${artPiece.fileName})}"
+					width="150px" /></td>
+				<td>[[${artPiece.eventId}]]</td>
+				<td>[[${artPiece.title}]]</td>
+				<td>[[${artPiece.author}]]</td>
+				<td>[[${artPiece.height}]]</td>
+				<td>[[${artPiece.width}]]</td>
+				<td>[[${artPiece.position}]]</td>
+				<td>[[${artPiece.description}]]</td>
+				<td>[[${artPiece.fileName}]]</td>
+			</tr>
+		</table>
+	</main>
+	<div id="mySidebar" class="sidebar">
+		<h4>
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×閉じる</a>
+		</h4>
+		<div class="side-menu">
+			<div class="dropdown">
+				<button class="dropbtn">作品登録</button>
+				<div class="dropdown-content">
+					<form action="/uploadPict" method="post"
+						enctype="multipart/form-data">
+						<div class="form-group">
+							<p>
+								ファイル： <input type="file" name="upfile" />
+							</p>
+							<div th:block th:object="${artInfo}">
+								<p>
+									展示ID <input type="number" th:field="*{eventId}" />
+								</p>
+								<p>
+									題名 <input type="text" th:field="*{title}" />
+								</p>
+								<p>
+									作者 <input type="text" th:field="*{author}" />
+								</p>
+								<p>
+									高さ <input type="number" th:field="*{height}" />
+								</p>
+								<p>
+									幅 <input type="number" th:field="*{width}" />
+								</p>
+								<p>
+									表示位置 <input type="number" th:field="*{position}" />
+								</p>
+								<p>
+									説明文 <input type="text" th:field="*{description}" />
+								</p>
+
+								<p>
+									<input type="submit" value="アップロード" class="sendInfo" />
+								</p>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<br />
+			<div class="dropdown">
+				<button class="dropbtn">更新</button>
+				<div class="dropdown-content">
+					<form action="/updateArtPiece" method="post">
+						<div class="form-group">
+							<div th:block th:object="${artInfo}">
+								<br />
+								<p>
+									作品ID<input type="number" th:field="*{id}" />
+								</p>
+								<p>
+									展示ID <input type="number" th:field="*{eventId}" />
+								</p>
+								<p>
+									題名 <input type="text" th:field="*{title}" />
+								</p>
+								<p>
+									作者 <input type="text" th:field="*{author}" />
+								</p>
+								<p>
+									高さ <input type="number" th:field="*{height}" />
+								</p>
+								<p>
+									幅 <input type="number" th:field="*{width}" />
+								</p>
+								<p>
+									表示位置 <input type="number" th:field="*{position}" />
+								</p>
+								<p>
+									説明文 <input type="text" th:field="*{description}" />
+								</p>
+								<p>
+									ファイル名<input type="text" th:field="*{fileName}" />
+								</p>
+							</div>
+							<input type="submit" value="更新" class="sendInfo">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<br />
+		<div class="dropdown">
+			<button class="dropbtn">削除</button>
+			<div class="dropdown-content">
+				<form action="/deleteArtPiece" method="post">
+					<div class="form-group">
+						<br />
+						<p>
+							作品ID<input type="number" name="id" />
+						</p>
+						<input type="submit" value="削除" class="sendInfo">
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+	<script>
+		function openNav() {
+			document.getElementById("main").style.marginLeft = "0px";
+			document.getElementById("mySidebar").style.transform = "translateX(0px)";
+		}
+		function closeNav() {
+			document.getElementById("main").style.marginLeft = "280px";
+			document.getElementById("mySidebar").style.transform = "translateX(280px)";
+		}
+		document.querySelectorAll('.dropbtn').forEach(function(dropbtn) {
+			dropbtn.addEventListener('click', function() {
+				var dropdownContent = this.nextElementSibling;
+				if (dropdownContent.style.display === 'block') {
+					dropdownContent.style.display = 'none';
+				} else {
+					dropdownContent.style.display = 'block';
+				}
+			});
+		});
+		$(document).ready(function() {
+			// すべての行に対してループを行います
+			$('table tr').each(function(index) {
+				// 最初の行（ヘッダー行）をスキップします
+				if (index === 0)
+					return;
+
+				// eventIdを取得します
+				var eventId = $(this).find('td:nth-child(3)').text();
+
+				// eventIdの値と型をコンソールに出力します
+				console.log('eventId value:', eventId);
+				console.log('eventId type:', typeof eventId);
+
+				// eventIdを数値に変換します
+				eventId = parseInt(eventId);
+
+				// eventIdが奇数か偶数かによって背景色を変更します
+				if (eventId % 2 == 0) {
+					$(this).css('background-color', 'rgb(220, 230, 210)'); // 偶数の場合の色
+				} else {
+					$(this).css('background-color', 'rgb(230, 240, 230)'); // 奇数の場合の色
+				}
+			});
+		});
+	</script>
+</body>
+</html>

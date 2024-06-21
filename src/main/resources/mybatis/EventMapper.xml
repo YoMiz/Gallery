@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.app.mapper.EventMapper">
+
+	<select id="selectAll" resultType="Event">
+		SELECT * FROM event
+	</select>
+
+	<select id="selectById" parameterType="int" resultType="Event">
+		SELECT *
+		FROM event WHERE event.id=#{id}
+	</select>
+
+	<select id="selectLimited" resultType="Event">
+		SELECT * FROM event ORDER
+		BY id DESC LIMIT
+		#{offset}, #{limit}
+	</select>
+
+	<select id="count" resultType="long">
+		SELECT COUNT(*) FROM event
+	</select>
+
+	<insert id="insert" parameterType="Event">
+		INSERT INTO
+		event(id,event_name, page_style, event_start, event_end)
+		VALUES (#{id},
+		#{event_name}, #{page_style}, #{event_start}, #{event_end})
+	</insert>
+
+	<update id="update" parameterType="Event">
+		UPDATE event
+		SET event_name =
+		#{event_name}, page_style = #{page_style}, event_start =
+		#{event_start}, event_end = #{event_end}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM event WHERE id =
+		#{id}
+	</delete>
+
+	<select id="selectMaxId" resultType="int">
+		SELECT MAX(id) FROM event
+	</select>
+	
+	<select id="findEventIdByDate" resultType="java.lang.Integer">
+	<![CDATA[
+		SELECT id
+		FROM event 
+		WHERE event_start <= #{selectedDate}
+		AND event_end >=
+		#{selectedDate} 
+		LIMIT 1]]>
+	</select>
+
+
+
+</mapper>

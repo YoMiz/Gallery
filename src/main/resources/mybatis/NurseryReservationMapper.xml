@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.app.mapper.NurseryReservationMapper">
+	<insert id="makeNurseryReservation"
+		parameterType="NurseryReservation">
+		INSERT INTO
+		nursery_reservation(user_id,
+		reservation_number, price, reservation_date)
+		VALUES(#{userId},#{reservationNumber},#{price},#{reservationDate})
+	</insert>
+	<select id="showNurseryReservationList"
+		resultType="UserNurseryReservation">
+		SELECT 
+		nursery_reservation.id,
+		user.user_name,
+		nursery_reservation.reservation_number,
+		nursery_reservation.reservation_date,
+		nursery_reservation.price
+		FROM nursery_reservation
+		JOIN user ON nursery_reservation.user_id = user.id
+	</select>
+	<update id="updateNurseryReservation" parameterType="NurseryReservation">
+		UPDATE nursery_reservation
+		SET user_id = #{userId}, reservation_number = #{reservationNumber}, reservation_date = #{reservationDate}, price =#{price}
+		WHERE id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.app.mapper.UserReservationMapper">
+	<insert id="createUserReservation" parameterType="UserReservation">
+		INSERT INTO
+		reservation(user_id, event_id, adult_num, child_num, price,
+		reservation_date, created, updated)
+		VALUES(#{userId}, #{eventId},
+		#{adultNum}, #{childNum}, #{price}, #{selectedDate}, NOW(), NOW())
+	</insert>
+	<select id="selectAll"
+		parameterType="com.example.app.domain.UserReservation">
+		SELECT reservation.id, reservation.event_id,
+		reservation.adult_num,
+		reservation.child_num, reservation.price,
+		reservation_date,
+		reservation.created, reservation.status,
+		user.user_name, user.point
+		FROM gallerydb.reservation
+		JOIN user
+		ON reservation.user_id = user.id
+	</select>
+	<update id="updateReservation" parameterType="UserReservation">
+		UPDATE reservation
+		SET user_id = #{userId}, event_id = #{eventId}, adult_num =
+		#{adultNum}, child_num = #{childNum}, price = #{price},
+		reservation_date = #{reservationDate}, updated = NOW(), status =
+		#{status} 
+		WHERE id = #{id}
+	</update>
+	<delete id="deleteReservation" parameterType="Integer">
+		DELETE FROM reservation
+		WHERE id = #{eventId}
+	</delete>
+</mapper>

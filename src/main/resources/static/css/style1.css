@@ -1,0 +1,70 @@
+@charset "UTF-8"; 
+
+.top-view-text {
+    font-family: Arial, sans-serif;
+    color: white;
+    background-color: rgba(200,210,220,0.8);
+    padding: 50px;
+    text-align: center;
+    width: 35%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.title-text{
+	width:200px;
+}
+
+
+#point {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.point-image {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.image-container {
+	display: flex;
+	align-items: center; /* 画像とテキストを中央揃えにする */
+	gap: 10px; /* 画像とテキストの間隔を設定 */
+}
+
+.text-container {
+	text-align: center; /* テキストを中央揃えにする */
+}
+
+.text-container p {
+	margin-bottom: 1em; /* pタグ同士の間隔を設定 */
+}
+
+.description {
+	width: 35ch; /* 一行あたりの文字数を設定 */
+	word-wrap: break-word; /* 文字数が上限を超えた場合に折り返す */
+}
+
+.description-title {
+	text-decoration: underline;
+	font-size: 24px;
+}
+
+.myImg {
+	width: 300px;
+	height: auto;
+	display: grid;
+	width: 300px;
+	grid-template-columns: 100px, 100px, 100px;
+	grid-template-rows: 100px, 100px, 100px;
+	margin: 10px; /* 画像間の間隔を設定 */
+}
+
+#point>div>img:nth-of-type(even) {
+	right: 5px;
+}
